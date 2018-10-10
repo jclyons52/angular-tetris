@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { Game } from '../domain/Game';
+import { Board } from '../domain/Board';
+import { BlockGenerator } from '../domain/BlockGenorator';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +9,8 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'angular-tetris';
+  game: Game;
+  constructor(game: Game) {
+    this.game = game;
+  }
 }
