@@ -1,5 +1,13 @@
-
-
 <div>
-  
+    <app-tetris-navbar [links]="links"></app-tetris-navbar>
+
+    <br>
+    <div class="container">
+        <div class="row" *ngFor="let row of game.board.rows">
+            <div class="mx-auto">
+                <span *ngFor="let pixel of row.pixels">{{ pixel.icon }}</span>
+            </div>
+        </div>
+    </div>
+
 </div>

@@ -7,4 +7,8 @@ export class Row {
       .fill(this.y)
       .map((i, x) => new Pixel(x, i));
   }
+
+  public render() {
+    return this.pixels.map(p => p.icon);
+  }
 }

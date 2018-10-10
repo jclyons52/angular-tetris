@@ -2,7 +2,7 @@ import { GameState } from './GameState';
 import { Board } from './Board';
 import { Injectable } from '@angular/core';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class Game {
     public state: GameState = GameState.Inactive;
     public score = 0;

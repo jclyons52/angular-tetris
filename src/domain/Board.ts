@@ -3,7 +3,7 @@ import { Row } from './Row';
 import { BlockGenerator } from './BlockGenorator';
 import { Injectable } from '@angular/core';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class Board {
   public currentBlock: Block | undefined;
   public rows: Row[];

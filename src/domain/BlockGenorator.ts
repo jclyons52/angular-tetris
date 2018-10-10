@@ -9,8 +9,7 @@ function rand<T>(items: T[]): T {
 function randInt(i: number) {
   return Math.floor(Math.random() * i);
 }
-
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class BlockGenerator {
   public getBlock() {
     return new Block(this.getPixels(), this.getColor());

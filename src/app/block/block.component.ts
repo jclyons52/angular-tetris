@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Pixel } from 'src/domain/Pixel';
 
 @Component({
   selector: 'app-block',
