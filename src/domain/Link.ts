@@ -1,6 +1,3 @@
 export class Link {
-    constructor(
-    public url: string,
-    public title: string
-    ) {}
-  }
+  constructor(public url: string, public title: string) {}
+}

@@ -1,6 +1,6 @@
 <div>
     <app-tetris-navbar [links]="links"></app-tetris-navbar>
-
+    <app-jumbotron [game]="game" ></app-jumbotron>
     <br>
     <div class="container">
         <div class="row" *ngFor="let row of game.board.rows">

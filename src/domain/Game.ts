@@ -10,6 +10,11 @@ export class Game {
     constructor(public board: Board) {
     }
 
+    public isInactive = () => this.state === GameState.Inactive;
+    public isActive = () => this.state === GameState.Active;
+    public isPaused = () => this.state === GameState.Paused;
+    public isOver = () => this.state === GameState.GameOver;
+
     public start() {
       this.state = GameState.Active;
       this.score = 0;
@@ -29,6 +34,9 @@ export class Game {
         if (this.state !== GameState.Active) {
             return;
         }
-        this.board.moveDown();
+        const result = this.board.moveDown();
+        if (!result) {
+          this.state = GameState.GameOver;
+        }
     }
   }

@@ -1,6 +1,8 @@
 import { Block } from './Block';
 import { Pixel } from './Pixel';
 import { Injectable } from '@angular/core';
+import { Limits } from './Limits';
+import { Row } from './Row';
 
 function rand<T>(items: T[]): T {
   return items[randInt(items.length)];
@@ -11,8 +13,8 @@ function randInt(i: number) {
 }
 @Injectable({ providedIn: 'root' })
 export class BlockGenerator {
-  public getBlock() {
-    return new Block(this.getPixels(), this.getColor());
+  public getBlock(limits: Limits, rows: Row[]) {
+    return new Block(limits, rows, this.getPixels(), this.getColor());
   }
 
   private getColor(): string {

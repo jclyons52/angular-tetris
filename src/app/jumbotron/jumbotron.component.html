@@ -1,0 +1,8 @@
+<div class="jumbotron">
+  <h1 class="display-4">Score: {{ game.score }}</h1>
+  <hr class="my-4">
+  <a *ngIf="game.isInactive()" class="btn btn-primary btn-lg mx-auto" (click)="game.start()" role="button">New Game</a>
+  <a *ngIf="game.isActive()" class="btn btn-primary btn-lg mx-auto" (click)="game.pause()" role="button">Pause</a>
+  <a *ngIf="game.isPaused()" class="btn btn-primary btn-lg mx-auto" (click)="game.unPause()" role="button">Resume</a>
+  <a *ngIf="game.isOver()" class="btn btn-primary btn-lg mx-auto" (click)="game.start()" role="button">New Game</a>
+</div>
