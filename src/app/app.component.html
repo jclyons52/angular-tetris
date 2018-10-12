@@ -3,11 +3,10 @@
     <app-jumbotron [game]="game" ></app-jumbotron>
     <br>
     <div class="container">
-        <div class="row" *ngFor="let row of game.board.rows">
+        <div class="row" *ngFor="let row of game.board.mergedRows">
             <div class="mx-auto">
-                <span *ngFor="let pixel of row.pixels">{{ pixel.icon }}</span>
+                <span [style.color]="pixel.color" *ngFor="let pixel of row">{{ pixel.icon }}</span>
             </div>
         </div>
     </div>
-
 </div>

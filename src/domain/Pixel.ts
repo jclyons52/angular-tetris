@@ -7,7 +7,7 @@ const tile = {
 export class Pixel {
 
   get icon() {
-    return this.filled ? tile.full : tile.empty;
+    return this.filled ? tile.full : tile.empty
   }
 
   constructor(

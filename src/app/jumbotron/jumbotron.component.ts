@@ -1,5 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Game } from 'src/domain/Game';
+import { Component, OnInit, Input } from '@angular/core'
+import { Game } from 'src/domain/Game'
 
 @Component({
   selector: 'app-jumbotron',
@@ -8,7 +8,7 @@ import { Game } from 'src/domain/Game';
 })
 export class JumbotronComponent implements OnInit {
 
-  @Input() game: Game;
+  @Input() game: Game
 
   constructor() { }
 

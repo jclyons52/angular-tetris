@@ -1,5 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Link } from 'src/domain/Link';
+import { Component, OnInit, Input } from '@angular/core'
+import { Link } from 'src/domain/Link'
 
 @Component({
   selector: 'app-tetris-navbar',
@@ -8,7 +8,7 @@ import { Link } from 'src/domain/Link';
 })
 export class TetrisNavbarComponent implements OnInit {
 
-  @Input() links: Link[];
+  @Input() links: Link[]
 
   constructor() { }
 

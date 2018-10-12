@@ -8,16 +8,16 @@ import { Link } from 'src/domain/Link';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  game: Game;
+  game: Game
 
   links = [
     new Link('#', 'Features'),
     new Link('#', 'Enterprise'),
     new Link('#', 'Support'),
     new Link('#', 'Pricing'),
-  ];
+  ]
 
   constructor(game: Game) {
-    this.game = game;
+    this.game = game
   }
 }

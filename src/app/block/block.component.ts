@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Pixel } from 'src/domain/Pixel';
+import { Component, OnInit } from '@angular/core'
+import { Pixel } from 'src/domain/Pixel'
 
 @Component({
   selector: 'app-block',
@@ -7,9 +7,9 @@ import { Pixel } from 'src/domain/Pixel';
   styleUrls: ['./block.component.css']
 })
 export class BlockComponent implements OnInit {
-  pixels: Pixel[];
+  pixels: Pixel[]
 
-  color: string;
+  color: string
 
   constructor() {}
 
