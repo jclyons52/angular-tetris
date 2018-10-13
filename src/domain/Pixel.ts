@@ -2,7 +2,7 @@
 const tile = {
   full: '■',
   empty: '□'
-};
+}
 
 export class Pixel {
 
