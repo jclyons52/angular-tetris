@@ -2,7 +2,63 @@ import { Pixel } from './Pixel'
 import { Limits } from './Limits'
 import { Row } from './Row'
 
+function getBounds(p): Limits {
+  return {
+    x: {
+      upper: Math.max(...p.map(({ x }) => x)),
+      lower: Math.min(...p.map(({ x }) => x))
+    },
+    y: {
+      upper: Math.max(...p.map(({ y }) => y)),
+      lower: Math.min(...p.map(({ y }) => y))
+    }
+  }
+}
+
+class PositionDelta {
+  constructor(public x: number, public y: number) {}
+}
+
+function getAxisLimit (bounds: Limits, limits: Limits, axis: 'x' | 'y') {
+  if (bounds[axis].upper > limits[axis].upper) {
+    return limits[axis].upper - bounds[axis].upper
+  }
+  if (bounds[axis].lower < limits[axis].lower) {
+    return -bounds[axis].lower
+  }
+  return 0
+}
+
+
+const getRequiredShifts = (bounds: Limits, limits: Limits): PositionDelta => {
+  return {
+    x: getAxisLimit(bounds, limits, 'x'),
+    y: getAxisLimit(bounds, limits, 'y')
+  }
+}
+
+function locToArr({ x, y }: Pixel): [number, number] {
+  return [x, y]
+}
+
+function diff([x1, y1], [x2, y2]): [number, number] {
+  return [x1 - x2, y1 - y2]
+}
+
+function sum([x1, y1], [x2, y2]) {
+  return [x1 + x2, y1 + y2]
+}
+
 export class Block {
+
+  atBottomLimit = this.atLimit('y', 'upper')
+
+  canMoveDown = this.canMove('y', 'upper')
+
+  private canMoveLeft = this.canMove('x', 'lower')
+
+  private canMoveRight = this.canMove('x', 'upper')
+
   constructor(
     private limits: Limits,
     private rows: Row[],
@@ -28,57 +84,9 @@ export class Block {
       return loc
     })
 
-    const getRequiredShifts = bounds => {
-      return {
-        x: (() => {
-          if (bounds.x.max > this.limits.x.upper) {
-            return this.limits.x.upper - bounds.x.max
-          }
-          if (bounds.x.min < this.limits.x.lower) {
-            return -bounds.x.min
-          }
-          return 0
-        })(),
-        y: (() => {
-          if (bounds.y.max > this.limits.y.upper) {
-            return this.limits.y.upper - bounds.y.max
-          }
-          if (bounds.y.min < this.limits.y.lower) {
-            return -bounds.y.min
-          }
-          return 0
-        })()
-      }
-    }
-
-    function getBounds(p) {
-      return {
-        x: {
-          max: Math.max(...p.map(({ x }) => x)),
-          min: Math.min(...p.map(({ x }) => x))
-        },
-        y: {
-          max: Math.max(...p.map(({ y }) => y)),
-          min: Math.min(...p.map(({ y }) => y))
-        }
-      }
-    }
-
-    function locToArr({ x, y }: Pixel): [number, number] {
-      return [x, y]
-    }
-
-    function diff([x1, y1], [x2, y2]): [number, number] {
-      return [x1 - x2, y1 - y2]
-    }
-
-    function sum([x1, y1], [x2, y2]) {
-      return [x1 + x2, y1 + y2]
-    }
-
     const shift = (() => {
       const bounds = getBounds(newPiece)
-      return getRequiredShifts(bounds)
+      return getRequiredShifts(bounds, this.limits)
     })()
 
     const pieces = newPiece.map(p => {
@@ -107,42 +115,6 @@ export class Block {
     }
   }
 
-  atLeftLimit = (point: Pixel | undefined): boolean => {
-    if (point) {
-      return point.x === this.limits.x.lower
-    }
-    return this.pixels.filter(({ x }) => x === this.limits.x.lower).length > 0
-  }
-
-  atRightLimit = (point: Pixel | undefined): boolean => {
-    if (point) {
-      return point.x === this.limits.x.upper
-    }
-    return this.pixels.filter(({ x }) => x === this.limits.x.upper).length > 0
-  }
-
-  atTopLimit = (point: Pixel | undefined): boolean => {
-    if (point) {
-      return point.y === this.limits.y.lower
-    }
-    return this.pixels.filter(({ y }) => y === this.limits.y.lower).length > 0
-  }
-
-  overTopLimit = (point: Pixel | undefined): boolean => {
-    if (point) {
-      return point.y > this.limits.y.upper
-    }
-    return this.pixels.filter(({ y }) => y > this.limits.y.upper).length > 0
-  }
-
-  atBottomLimit = (): boolean => {
-    return this.pixels.filter(({ y }) => y === this.limits.y.upper).length > 0
-  }
-
-  isFull = (row: Row): boolean => {
-    return row.filter(i => !i.filled).length === 0
-  }
-
   isOverlapping = (): boolean => {
     return (
       this.pixels.filter(({ x, y }) => {
@@ -157,45 +129,27 @@ export class Block {
     )
   }
 
-  canMoveDown = (): boolean => {
-    return (
-      this.pixels.filter(({ x, y }) => {
-        if (y === this.limits.y.upper) {
-          return true
-        }
-        if (this.rows[y + 1][x].filled) {
-          return true
-        }
-        return false
-      }).length === 0
-    )
+  private atLimit(axis: 'x' | 'y', bound: 'upper' | 'lower') {
+    return (): boolean => {
+      return this.pixels.filter((pixel) => pixel[axis] === this.limits[axis][bound]).length > 0
+    }
   }
 
-  canMoveLeft = (): boolean => {
-    return (
-      this.pixels.filter(({ x, y }) => {
-        if (x === this.limits.x.lower) {
-          return true
-        }
-        if (this.rows[y][x - 1].filled) {
-          return true
-        }
-        return false
-      }).length === 0
-    )
-  }
-
-  canMoveRight = (): boolean => {
-    return (
-      this.pixels.filter(({ x, y }) => {
-        if (x === this.limits.x.upper) {
-          return true
-        }
-        if (this.rows[y][x + 1].filled) {
-          return true
-        }
-        return false
-      }).length === 0
-    )
+  private canMove(axis: 'x' | 'y', bound: 'upper' | 'lower') {
+    return (): boolean => {
+      return (
+        this.pixels.filter((pixel) => {
+          if (pixel[axis] === this.limits[axis][bound]) {
+            return true
+          }
+          const rowLocation = { ...pixel }
+          rowLocation[axis] += 1
+          if (this.rows[rowLocation.y][rowLocation.x].filled) {
+            return true
+          }
+          return false
+        }).length === 0
+      )
+    }
   }
 }
